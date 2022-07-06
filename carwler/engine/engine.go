@@ -1,0 +1,33 @@
+package engine // Package engine 工具处理
+
+import (
+	"log"
+	"u2pppw/carwler/fetcher"
+)
+
+func Run(seeds ...Request) {
+	var requests []Request
+	for _, r := range seeds {
+		requests = append(requests, r)
+	}
+
+	for len(requests) > 0 {
+		r := requests[0]
+		requests = requests[1:]
+		log.Printf("fetching url is %s", r.Url)
+		body, err := fetcher.Fetch(r.Url)
+		if err != nil {
+			log.Printf("Fetcher : error fetching url %s :%v", r.Url, err)
+			continue
+		}
+		parseResult := r.ParserFunc(body)
+
+		requests = append(requests, parseResult.Request...) //把得到的所有url请求放入队列里 维护下这个爬虫队列
+
+		// 输出得到的内容
+		for _, item := range parseResult.Items {
+			log.Printf("Got item is : %v", item) // %v表示不转义
+		}
+
+	}
+}
