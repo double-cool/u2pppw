@@ -1,10 +1,11 @@
-package engine // Package engine 工具处理
+package engine // Package engine 工具包
 
 import (
 	"log"
 	"u2pppw/carwler/fetcher"
 )
 
+// Run 工具包的开始方法 在这里维护下请求队列
 func Run(seeds ...Request) {
 	var requests []Request
 	for _, r := range seeds {

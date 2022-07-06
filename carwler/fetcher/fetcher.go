@@ -1,4 +1,4 @@
-package fetcher
+package fetcher // Package fetcher 读取包
 
 import (
 	"fmt"
