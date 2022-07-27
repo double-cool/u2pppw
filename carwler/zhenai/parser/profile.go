@@ -8,15 +8,7 @@ import (
 const profileJsonRe = `window.__INITIAL_STATE__=(.*?)`
 
 type BasicInfo struct {
-	Mari      string `json:"0"`
-	Age       string `json:"1"`
-	Xingzuo   string `json:"2"`
-	Height    string `json:"3"`
-	Weight    string `json:"4"`
-	JobAddr   string `json:"5"`
-	Salary    string `json:"6"`
-	Work      string `json:"7"`
-	Education string `json:"8"`
+	data []string
 }
 
 //type ObjectInfo struct {
@@ -28,7 +20,7 @@ type ObjectInfo struct {
 }
 
 type profile struct {
-	ObjectInfo map[string]ObjectInfo `json:"objectInfo"`
+	ObjectInfo ObjectInfo `json:"objectInfo"`
 }
 
 func main() {
@@ -349,6 +341,23 @@ func main() {
 	//	profileJson := match[1]
 	var profileArr profile
 	//var baseInfo BasicInfo
+	data := v.(map[string]interface{})
+
+	for k, v := range data {
+		switch v := v.(type) {
+		case string:
+			fmt.Println(k, v, "(string)")
+		case float64:
+			fmt.Println(k, v, "(float64)")
+		case []interface{}:
+			fmt.Println(k, "(array):")
+			for i, u := range v {
+				fmt.Println("    ", i, u)
+			}
+		default:
+			fmt.Println(k, v, "(unknown)")
+		}
+	}
 
 	err := json.Unmarshal(profileJson, &profileArr)
 	if err != nil {
@@ -377,7 +386,8 @@ func main() {
 	//	baseInfo.Education = Education
 	//
 	//}
+	fmt.Println("aaaa", profileArr.ObjectInfo.BasicInfo)
 	fmt.Println("aaaa", profileArr)
-
+	fmt.Println("aaaa", profileArr.ObjectInfo.BasicInfo)
 	return
 }
