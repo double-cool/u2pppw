@@ -16,12 +16,12 @@ func Run(seeds ...Request) {
 		r := requests[0]
 		requests = requests[1:]
 		log.Printf("fetching url is %s", r.Url)
-		body, err := fetcher.Fetch(r.Url)
+		body, err := fetcher.Fetch(r.Url) // 取url
 		if err != nil {
 			log.Printf("Fetcher : error fetching url %s :%v", r.Url, err)
 			continue
 		}
-		parseResult := r.ParserFunc(body)
+		parseResult := r.ParserFunc(body) // 读取到链接的内容放入函数中处理
 
 		requests = append(requests, parseResult.Request...) //把得到的所有url请求放入队列里 维护下这个爬虫队列
 
